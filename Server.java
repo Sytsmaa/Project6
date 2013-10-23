@@ -13,6 +13,7 @@ public class Server implements MessageListener
 	public Server(Channel channel)
 	{
 		tcpChannel = (TCPChannel)channel;
+		tcpChannel.setMessageListener(this);
 	}
 	
 	public static void main(String[] args)

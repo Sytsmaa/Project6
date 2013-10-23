@@ -32,7 +32,7 @@ public class Requester implements MessageListener
 	
 	public void run()
 	{
-		Scanner scanner = new Scanner(System.in);
+		tcpChannel.setMessageListener(this);
 		boolean isNumber = false;
 		int location = 0;
 		
@@ -47,7 +47,7 @@ public class Requester implements MessageListener
 			
 			try
 			{
-				location = scanner.nextInt();
+				location = new Scanner(System.in).nextInt();
 				isNumber = true;
 			}
 			catch (Exception e)
@@ -89,13 +89,11 @@ public class Requester implements MessageListener
 		}
 			
 		System.out.println("Waiting for volunteer...");
-		
-		scanner.close();
 	}
 	
 	public void messageReceived(String message, int clientID)
 	{
-		System.out.printf("Volunteer %s assigned and will arrive shortly.", message.substring(message.indexOf(" ") + 1));
+		System.out.printf("Volunteer %s assigned and will arrive shortly.\n", message.substring(message.indexOf(" ") + 1));
 		run();
 	}
 }

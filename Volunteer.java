@@ -32,10 +32,10 @@ public class Volunteer implements MessageListener
 	
 	public void run()
 	{
-		Scanner scanner = new Scanner(System.in);
+		tcpChannel.setMessageListener(this);
 		
 		System.out.println("Press ENTER when ready:");
-		scanner.next();
+		new Scanner(System.in).nextLine();
 		
 		try
 		{
@@ -47,12 +47,10 @@ public class Volunteer implements MessageListener
 		}
 		
 		System.out.println("Waiting for assignment...");
-		
-		scanner.close();
 	}
 
 	public void messageReceived(String message, int clientID)
 	{
-		System.out.printf("Proceed to %s", message.substring(message.indexOf(" ") + 1));
+		System.out.printf("Proceed to %s\n", message.substring(message.indexOf(" ") + 1));
 	}
 }
