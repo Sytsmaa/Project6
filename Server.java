@@ -20,13 +20,12 @@ public class Server implements MessageListener
 		Server s = new Server(new TCPChannel(Integer.parseInt(args[0])));
 	}
 	
-	//add new volunteers/requesters to the lists and then remove peoples
-	//figure out a way to get location and id
-	//figure out what datatypes for lists
 	public void messageReceived(String message, int clientID)
 	{
 		if ("REQUEST".equals(message.substring(0, message.indexOf(" "))))
 		{
+			requesters.add(new Request(message.substring(message.indexOf(" ") + 1), clientID));
+			
 			if (volunteers.size() != 0)
 			{
 				try
@@ -50,11 +49,11 @@ public class Server implements MessageListener
 				volunteers.remove(0);
 				requesters.remove(0);
 			}
-			else
-				requesters.add(new Request(message.substring(message.indexOf(" ") + 1), clientID));
 		}
 		else if ("VOLUNTEER".equals(message.substring(0, message.indexOf(" "))))
 		{
+			volunteers.add(clientID);
+			
 			if (requesters.size() != 0)
 			{
 				try
@@ -78,8 +77,6 @@ public class Server implements MessageListener
 				volunteers.remove(0);
 				requesters.remove(0);
 			}
-			else
-				volunteers.add(clientID);
 		}
 	}
 }
