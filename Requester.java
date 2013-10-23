@@ -33,18 +33,32 @@ public class Requester implements MessageListener
 	public void run()
 	{
 		Scanner scanner = new Scanner(System.in);
+		boolean isNumber = false;
+		int location = 0;
 		
-		System.out.println("1. CL50 - Class of 1950 Lecture Hall");
-		System.out.println("2. EE - Electrical Engineering Building");
-		System.out.println("3. LWSN - Lawson Computer Science Building");
-		System.out.println("4. PMU - Purdue Memorial Union");
-		System.out.println("5. PUSH - Purdue University Student Health Center");
-		System.out.println("Enter your location (1-5):");
+		while (!isNumber)
+		{
+			System.out.println("1. CL50 - Class of 1950 Lecture Hall");
+			System.out.println("2. EE - Electrical Engineering Building");
+			System.out.println("3. LWSN - Lawson Computer Science Building");
+			System.out.println("4. PMU - Purdue Memorial Union");
+			System.out.println("5. PUSH - Purdue University Student Health Center");
+			System.out.println("Enter your location (1-5):");
+			
+			try
+			{
+				location = scanner.nextInt();
+				isNumber = true;
+			}
+			catch (Exception e)
+			{
+				System.out.println("Please only enter numbers.");
+			}
+		}
 		
-		int loc = scanner.nextInt();
 		String message = "";
 		
-		switch (loc)
+		switch (location)
 		{
 		case 1:
 			message = "REQUEST CL50";
@@ -62,9 +76,9 @@ public class Requester implements MessageListener
 			message = "REQUEST PUSH";
 			break;
 		default:
-			System.out.println("Invalid input");
+			System.exit(0);
 		}
-		
+			
 		try
 		{
 			tcpChannel.sendMessage(message);
@@ -73,7 +87,7 @@ public class Requester implements MessageListener
 		{
 			e.printStackTrace();
 		}
-		
+			
 		System.out.println("Waiting for volunteer...");
 		
 		scanner.close();
@@ -81,6 +95,7 @@ public class Requester implements MessageListener
 	
 	public void messageReceived(String message, int clientID)
 	{
-		System.out.printf("Volunteer %d assigned and will arrive shortly.", message.substring(message.indexOf(" ") + 1));
+		System.out.printf("Volunteer %s assigned and will arrive shortly.", message.substring(message.indexOf(" ") + 1));
+		run();
 	}
 }
