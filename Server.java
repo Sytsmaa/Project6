@@ -18,7 +18,18 @@ public class Server implements MessageListener
 	
 	public static void main(String[] args)
 	{
-		Server s = new Server(new TCPChannel(Integer.parseInt(args[0])));
+		int port = 0;
+		
+		try
+		{
+			port = Integer.parseInt(args[0]);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		Server s = new Server(new TCPChannel(port));
 	}
 	
 	public void messageReceived(String message, int clientID)

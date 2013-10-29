@@ -11,15 +11,28 @@ public class Volunteer implements MessageListener
 	public Volunteer(Channel channel)
 	{
 		tcpChannel = (TCPChannel)channel;
+		tcpChannel.setMessageListener(this);
+		run();
 	}
 	
 	public static void main(String[] args)
 	{
+		int port = 0;
+		
+		try
+		{
+			port = Integer.parseInt(args[1]);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		TCPChannel tc = null;
 		
 		try
 		{
-			tc = new TCPChannel(args[0], Integer.parseInt(args[1]));
+			tc = new TCPChannel(args[0], port);
 		}
 		catch (ChannelException e)
 		{
@@ -27,13 +40,10 @@ public class Volunteer implements MessageListener
 		}
 		
 		Volunteer v = new Volunteer(tc);
-		v.run();
 	}
 	
 	public void run()
 	{
-		tcpChannel.setMessageListener(this);
-		
 		System.out.println("Press ENTER when ready:");
 		new Scanner(System.in).nextLine();
 		
@@ -52,5 +62,6 @@ public class Volunteer implements MessageListener
 	public void messageReceived(String message, int clientID)
 	{
 		System.out.printf("Proceed to %s\n", message.substring(message.indexOf(" ") + 1));
+		run();
 	}
 }
